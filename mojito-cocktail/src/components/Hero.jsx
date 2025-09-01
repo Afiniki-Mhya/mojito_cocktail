@@ -1,40 +1,66 @@
-import React from "react";
+import React, { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
+import { useMediaQuery } from "react-responsive";
 
 const Hero = () => {
+  const videoRef = useRef();
+
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
   useGSAP(() => {
     const heroSplit = new SplitText(".title", { type: "chars, words" });
     const paragraphSplit = new SplitText(".subtitle", { type: "lines" });
 
-    heroSplit.chars.forEach((char) => char.classList.add('text-gradient'))
+    heroSplit.chars.forEach((char) => char.classList.add("text-gradient"));
     gsap.from(heroSplit.chars, {
-        yPercent: 100,
-        duration: 1.8,
-        stagger: 0.08,
-        ease: 'expo.out'
-    })
+      yPercent: 100,
+      duration: 1.8,
+      stagger: 0.08,
+      ease: "expo.out",
+    });
 
     gsap.from(paragraphSplit.lines, {
-        opacity: 0,
-        stagger: 0.06,
-        delay: 1,
-        yPercent: 100,
-        duration: 1.8,
-        ease: 'expo.out'
-    })
+      opacity: 0,
+      stagger: 0.06,
+      delay: 1,
+      yPercent: 100,
+      duration: 1.8,
+      ease: "expo.out",
+    });
 
-    gsap.timeline({
+    gsap
+      .timeline({
         scrollTrigger: {
-            trigger: '#hero',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 'true',
-        }
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: "true",
+        },
+      })
+      .to(".left-leaf", { y: -200 }, 0)
+      .to(".right-leaf", { y: 200 }, 0);
+
+    const startValue = isMobile ? "top 50%" : "center 60%";
+    const endValue = isMobile ? "120% top" : "bottom top";
+
+    videoTimelineRef.current = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hero',
+        start: startValue,
+        end: endValue,
+        scrub: 'true',
+        onEnter: () => videoRef.current.play() ,
+        onEnterBack: () => videoRef.current.play() ,
+        onLeave: () => videoRef.current.pause() ,
+        onLeaveBack: () => videoRef.current.pause() ,
+      }
     })
-    .to('.left-leaf', {y: -200, }, 0)
-    .to('.right-leaf', {y: 200, }, 0)
+    .fromTo(videoRef.current,{
+      currentTime: 0,
+      scale: isMobile ? 1.2 : 1.5
+    })
   });
 
   return (
@@ -72,6 +98,13 @@ const Hero = () => {
           </div>
         </div>
       </section>
+      <video
+        ref={videoRef}
+        src="/videos/input.mp4"
+        playsInline
+        preload=" auto"
+        mute
+      />
     </>
   );
 };

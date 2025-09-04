@@ -2,12 +2,11 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
-import { useMediaQuery } from "react-responsive";
+import {useMediaQuery} from "react-responsive";
 
 const Hero = () => {
   const videoRef = useRef();
-
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = useMediaQuery({maxWidth: 767});
 
   useGSAP(() => {
     const heroSplit = new SplitText(".title", { type: "chars, words" });
@@ -30,38 +29,23 @@ const Hero = () => {
       ease: "expo.out",
     });
 
-    gsap
-      .timeline({
+    gsap.timeline({
         scrollTrigger: {
           trigger: "#hero",
           start: "top top",
           end: "bottom top",
-          scrub: "true",
+          scrub: true,
         },
       })
       .to(".left-leaf", { y: -200 }, 0)
       .to(".right-leaf", { y: 200 }, 0);
 
-    const startValue = isMobile ? "top 50%" : "center 60%";
-    const endValue = isMobile ? "120% top" : "bottom top";
+    const StartValue = isMobile ? 'top 50%' : 'Center 60% ';
+    const EndValue = isMobile ? '120% top' : 'bottom top ';
 
-    videoTimelineRef.current = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#hero',
-        start: startValue,
-        end: endValue,
-        scrub: 'true',
-        onEnter: () => videoRef.current.play() ,
-        onEnterBack: () => videoRef.current.play() ,
-        onLeave: () => videoRef.current.pause() ,
-        onLeaveBack: () => videoRef.current.pause() ,
-      }
-    })
-    .fromTo(videoRef.current,{
-      currentTime: 0,
-      scale: isMobile ? 1.2 : 1.5
-    })
-  });
+
+
+  }, []);
 
   return (
     <>
@@ -90,7 +74,7 @@ const Hero = () => {
             <div className="view-cocktails">
               <p className="subtitle">
                 Every cocktail on the menu is a blend of premium ingredients,
-                creative flair and timeless recipies- designed to soothe your
+                creative flair and timeless recipes - designed to soothe your
                 senses
               </p>
               <a href="#cocktails">View Cocktails</a>
@@ -98,13 +82,16 @@ const Hero = () => {
           </div>
         </div>
       </section>
+        <div className="video absolute inset-0">
       <video
         ref={videoRef}
         src="/videos/input.mp4"
         playsInline
-        preload=" auto"
-        mute
+        preload="auto"
+        muted
+        style={{ width: "100%", display: "block" }}
       />
+        </div>
     </>
   );
 };

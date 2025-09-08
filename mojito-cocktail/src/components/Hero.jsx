@@ -80,10 +80,10 @@ const Hero = () => {
     return (
         <>
             {/* Fixed background video */}
-            <div className="video fixed top-0 left-0 w-full h-full z-1 overflow-hidden ">
+            <div className="video fixed top-0 left-0 w-full h-full z-0 overflow-hidden ">
                 <video
                     ref={videoRef}
-                    src="/videos/input.mp4"
+                    src="/videos/output.mp4"
                     playsInline
                     preload="auto"
                     muted
